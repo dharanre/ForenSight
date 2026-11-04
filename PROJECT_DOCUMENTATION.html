@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ForenSight — Project Documentation & Defense Manual</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #334155;
+      --code-bg: #090d16;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      background-color: var(--bg);
+      color: var(--text);
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    h1, h2, h3, h4 {
+      color: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      margin-top: 36px;
+    }
+    h1 { font-size: 2.2rem; border-bottom: 2px solid var(--accent); color: var(--accent); }
+    h2 { font-size: 1.5rem; margin-top: 30px; }
+    h3 { font-size: 1.2rem; border-bottom: none; color: #38bdf8; }
+    p, li { color: #cbd5e1; }
+    code {
+      background: var(--code-bg);
+      color: #38bdf8;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      background: var(--code-bg);
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      color: #e2e8f0;
+      font-family: Consolas, monospace;
+      font-size: 0.88rem;
+    }
+    pre code { background: transparent; padding: 0; color: inherit; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: var(--card-bg);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 12px 14px;
+      text-align: left;
+    }
+    th {
+      background: #1e293b;
+      color: var(--accent);
+      font-weight: 600;
+    }
+    blockquote {
+      margin: 16px 0;
+      padding: 12px 20px;
+      background: #1e293b;
+      border-left: 4px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      margin-right: 6px;
+    }
+    @media print {
+      body { background: white; color: black; max-width: 100%; padding: 0; }
+      pre, code { background: #f1f5f9; color: black; border: 1px solid #cbd5e1; }
+      table { background: white; }
+      th, td { border: 1px solid #94a3b8; }
+      h1, h2, h3 { color: #0284c7; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>ForenSight — Project Documentation & Defense Manual</h1>
+  <p>
+    <span class="badge">ISO/IEC 27037:2012</span>
+    <span class="badge">BSA Sec 63(4)</span>
+    <span class="badge">NIST SP 800-86</span>
+    <span class="badge">MongoDB 7.0 WiredTiger</span>
+    <span class="badge">FastAPI & React 19</span>
+  </p>
+
+  <h2>1. Executive Summary</h2>
+  <p>
+    <strong>ForenSight</strong> is a database-driven Digital Forensics Investigation & Evidence Management Platform.
+    Standard full-file hashes (e.g. SHA-256) function only as binary indicators: they show if an artifact was changed, but cannot reveal where.
+    ForenSight introduces <strong>deterministic 4096-byte Merkle tree block slicing</strong> to pinpoint the exact physical byte offsets of tampering, an autonomous <strong>5-part forensic diagnostic engine</strong>, an <strong>append-only SHA-256 hash-chained custody ledger</strong>, and automated compliance reporting under <strong>Section 63(4) of the Bharatiya Sakshya Adhiniyam, 2023 (BSA)</strong>.
+  </p>
+
+  <h2>2. Quick Setup & Execution</h2>
+  <h3>Terminal 1: FastAPI Backend (Port 8000)</h3>
+  <pre><code>cd backend
+pip install -r requirements.txt
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload</code></pre>
+  <p>API Documentation (Swagger UI): <a href="http://127.0.0.1:8000/docs" style="color: #38bdf8;">http://127.0.0.1:8000/docs</a></p>
+
+  <h3>Terminal 2: React Frontend (Port 5173)</h3>
+  <pre><code>cd frontend
+npm install
+npm run dev</code></pre>
+  <p>Web Application: <a href="http://localhost:5173" style="color: #38bdf8;">http://localhost:5173</a></p>
+
+  <h2>3. Core Forensic Methodologies</h2>
+  <ul>
+    <li><strong>Stream-Buffered Multi-Hashing ($O(1)$ RAM):</strong> Calculates MD5, SHA-1, and SHA-256 concurrently using 64 KB buffers, preventing Out-Of-Memory crashes on multi-GB disk images.</li>
+    <li><strong>4096-Byte Merkle Tree Slicing:</strong> Partitions file into 4KB blocks: <code>[i * 4096, (i + 1) * 4096 - 1]</code>. Comparing candidate blocks against baseline isolates exact modified sectors.</li>
+    <li><strong>5-Part Diagnostic Engine:</strong>
+      <ol>
+        <li><em>Multi-Hash Divergence:</em> Cross-algorithm integrity check.</li>
+        <li><em>Magic Byte Analysis:</em> Detects file extension spoofing (e.g., EXE renamed to PDF).</li>
+        <li><em>EXIF & Telematics:</em> Camera serial numbers, GPS coordinates, Photoshop author tags.</li>
+        <li><em>Error Level Analysis (ELA):</em> Recompression delta visualized via OpenCV Jet colormaps.</li>
+        <li><em>Temporal Paradoxes:</em> Modified before creation, future dates, anachronisms.</li>
+      </ol>
+    </li>
+    <li><strong>Append-Only Custody Ledger:</strong> <code>EventHash_k = SHA-256(EventHash_{k-1} || Payload_k)</code>. Modifying any past record breaks the chain.</li>
+    <li><strong>Integrity Watchdog Daemon:</strong> Scans files every 30 seconds; sends real-time Server-Sent Events (SSE) upon any disk alteration.</li>
+    <li><strong>Statutory Admissibility:</strong> Auto-generates certified PDF reports meeting BSA 2023 Section 63(4) and US FRE 902(13/14).</li>
+  </ul>
+
+  <h2>4. NoSQL Database (MongoDB) Architecture</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Collection</th>
+        <th>Forensic Purpose</th>
+        <th>Design Pattern</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>cases</code></td>
+        <td>Investigation records & case state</td>
+        <td>Referenced by Evidence</td>
+      </tr>
+      <tr>
+        <td><code>evidence</code></td>
+        <td>Artifact metadata & baseline hashes</td>
+        <td><strong>Embedded</strong> Merkle blocks (Single-seek I/O)</td>
+      </tr>
+      <tr>
+        <td><code>custodyEvents</code></td>
+        <td>Append-only hash-chained custody events</td>
+        <td><strong>Referenced</strong> (prevents 16MB BSON limit)</td>
+      </tr>
+      <tr>
+        <td><code>analysisJobs</code></td>
+        <td>Automated diagnostic state machine</td>
+        <td>Referenced</td>
+      </tr>
+      <tr>
+        <td><code>findings</code></td>
+        <td>Diagnostic anomalies & reviewer notes</td>
+        <td>Referenced</td>
+      </tr>
+      <tr>
+        <td><code>auditLogs</code></td>
+        <td>Administrative & user action trail</td>
+        <td>Append-only time-series</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>5. Review Defense Q&A Cheat Sheet</h2>
+  <blockquote>
+    <strong>Q: Why Merkle Trees instead of single SHA-256?</strong><br>
+    <em>A: SHA-256 is binary—it only indicates whether a file changed. Slicing into 4096-byte blocks allows ForenSight to pinpoint the exact physical byte offsets of tampering.</em>
+  </blockquote>
+  <blockquote>
+    <strong>Q: How is Chain of Custody secured against DBA tampering?</strong><br>
+    <em>A: It uses SHA-256 parent-child hash chaining. Any modification or deletion of past records breaks the hash verification at that index immediately.</em>
+  </blockquote>
+  <blockquote>
+    <strong>Q: What legal standard does the PDF certificate satisfy?</strong><br>
+    <em>A: Section 63(4) of the Bharatiya Sakshya Adhiniyam, 2023 (BSA) (superseding Section 65B of Indian Evidence Act) and ISO/IEC 27037:2012.</em>
+  </blockquote>
+
+</body>
+</html>
+
