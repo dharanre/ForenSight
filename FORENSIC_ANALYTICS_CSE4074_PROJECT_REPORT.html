@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Project Report — Forensic Analytics (CSE4074) — Giridharan R E (23MIA1128)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap');
+
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --navy: #0f172a;
+      --navy-card: #1e293b;
+      --slate-dark: #334155;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --bg: #ffffff;
+      --bg-alt: #f8fafc;
+      --border: #e2e8f0;
+      --code-bg: #f1f5f9;
+      --accent: #2563eb;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text);
+      background-color: #f1f5f9;
+      line-height: 1.7;
+      font-size: 14.5px;
+      padding: 40px 20px;
+    }
+
+    .report-wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 60px 70px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      border: 1px solid var(--border);
+    }
+
+    /* Academic Title Page */
+    .title-page {
+      text-align: center;
+      padding-bottom: 50px;
+      margin-bottom: 50px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .institution-header {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: #1e293b;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .school-header {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+    }
+
+    .course-badge {
+      display: inline-block;
+      background: #e0f2fe;
+      color: #0369a1;
+      font-weight: 700;
+      padding: 5px 16px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      margin-bottom: 35px;
+      border: 1px solid #bae6fd;
+    }
+
+    .project-title {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.25;
+      margin-bottom: 18px;
+      letter-spacing: -0.5px;
+    }
+
+    .project-subtitle {
+      font-size: 1.05rem;
+      font-family: 'Merriweather', serif;
+      font-style: italic;
+      color: var(--text-muted);
+      line-height: 1.5;
+      max-width: 750px;
+      margin: 0 auto 40px auto;
+    }
+
+    /* Meta Table */
+    .meta-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 30px 0;
+      font-size: 0.9rem;
+      background: #f8fafc;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .meta-table th {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 10px 18px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 0.82rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .meta-table td {
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .meta-table tr:last-child td { border-bottom: none; }
+    .meta-table td:first-child {
+      font-weight: 600;
+      color: #334155;
+      width: 38%;
+      background: #f1f5f9;
+    }
+
+    .highlight-name {
+      font-weight: 700;
+      color: #0369a1;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4 {
+      color: #0f172a;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    h2 {
+      font-size: 1.45rem;
+      margin-top: 45px;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h3 {
+      font-size: 1.18rem;
+      margin-top: 26px;
+      margin-bottom: 12px;
+      color: #0369a1;
+    }
+
+    h4 {
+      font-size: 1.02rem;
+      margin-top: 20px;
+      margin-bottom: 8px;
+      color: #334155;
+    }
+
+    p { margin-bottom: 14px; color: #334155; }
+    ul, ol { margin-left: 24px; margin-bottom: 16px; color: #334155; }
+    li { margin-bottom: 6px; }
+
+    /* Code & Algorithms */
+    pre {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 18px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', Consolas, monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      margin: 18px 0;
+      line-height: 1.55;
+      border: 1px solid #1e293b;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', Consolas, monospace;
+      background: #f1f5f9;
+      color: #0369a1;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.88em;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+    }
+
+    /* Callout & Box */
+    .callout {
+      background: #f0fdf4;
+      border-left: 4px solid #16a34a;
+      padding: 14px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 20px 0;
+      font-size: 0.92rem;
+    }
+
+    .callout-blue {
+      background: #f0f9ff;
+      border-left: 4px solid #0284c7;
+      padding: 14px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 20px 0;
+      font-size: 0.92rem;
+    }
+
+    /* Data Tables */
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 22px 0;
+      font-size: 0.88rem;
+    }
+
+    table.data-table th, table.data-table td {
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      text-align: left;
+    }
+
+    table.data-table th {
+      background: #f8fafc;
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    table.data-table tr:nth-child(even) { background: #fbfcfd; }
+
+    .badge-pass {
+      display: inline-block;
+      background: #dcfce7;
+      color: #15803d;
+      font-weight: 700;
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .badge-feat {
+      display: inline-block;
+      background: #e0f2fe;
+      color: #0369a1;
+      font-weight: 600;
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    /* Print Formatting */
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+        font-size: 12pt;
+      }
+      .report-wrapper {
+        box-shadow: none;
+        border: none;
+        padding: 0;
+        max-width: 100%;
+      }
+      .page-break {
+        page-break-before: always;
+      }
+      pre {
+        background: #f8fafc !important;
+        color: #000000 !important;
+        border: 1px solid #cbd5e1;
+      }
+      h2 { border-bottom: 1.5pt solid #0f172a; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="report-wrapper">
+
+  <!-- ==================== TITLE PAGE ==================== -->
+  <div class="title-page">
+    <div class="institution-header">Vellore Institute of Technology, Chennai</div>
+    <div class="school-header">School of Computer Science and Engineering (SCOPE)</div>
+    <div class="course-badge">Course Project Report — Forensic Analytics (CSE4074)</div>
+
+    <h1 class="project-title">ForenSight — Cryptographically Verifiable Digital Forensics Investigation & Evidentiary Integrity Platform</h1>
+
+    <p class="project-subtitle">
+      A Comprehensive, Court-Admissible Forensic Framework Integrating Deterministic Merkle-Tree Byte-Level Tamper Localization, Multi-Algorithm Cryptographic Hashing, 5-Tier Diagnostic Heuristics, Append-Only Custody Chains, and NoSQL Architecture
+    </p>
+
+    <table class="meta-table">
+      <thead>
+        <tr>
+          <th>Attribute</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Course Name</td>
+          <td><strong>Forensic Analytics</strong></td>
+        </tr>
+        <tr>
+          <td>Course Code</td>
+          <td><strong>CSE4074</strong></td>
+        </tr>
+        <tr>
+          <td>Academic Semester</td>
+          <td><strong>Fall Semester 2026–27</strong></td>
+        </tr>
+        <tr>
+          <td>Student Investigator</td>
+          <td><strong class="highlight-name">Giridharan R E</strong></td>
+        </tr>
+        <tr>
+          <td>Register Number / Roll No</td>
+          <td><strong>23MIA1128</strong></td>
+        </tr>
+        <tr>
+          <td>Department / School</td>
+          <td>School of Computer Science and Engineering (SCOPE)</td>
+        </tr>
+        <tr>
+          <td>Institution</td>
+          <td>Vellore Institute of Technology (VIT), Chennai Campus</td>
+        </tr>
+        <tr>
+          <td>Faculty / Course Professor</td>
+          <td><strong>Dr. S. Johanan Joyselin</strong></td>
+        </tr>
+        <tr>
+          <td>Submission Date</td>
+          <td>November 2026</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ==================== ABSTRACT ==================== -->
+  <h2>1. Abstract & Executive Summary</h2>
+  <p>
+    In electronic criminal proceedings and incident response workflows, maintaining unassailable proof of evidence integrity is required for statutory courtroom admissibility. Conventional forensic triage and hashing methods rely on single global digests (e.g., standard SHA-256 or MD5). While such hashes verify overall bitstream equality, they function purely as a binary indicator: an altered hash informs the investigator that a file has been modified, but provides zero information about <em>where</em>, <em>how much</em>, or <em>what specific byte sectors</em> were manipulated. Furthermore, electronic artifacts exhibit extreme structural polymorphism (e.g., JPEG EXIF tags, GPS telemetry, PDF stream dictionaries, Windows PE section tables), which creates severe table sparsity and relational JOIN bottlenecks when forced into traditional SQL schemas.
+  </p>
+  <p>
+    <strong>ForenSight</strong> is a full-stack digital forensics and evidence management platform designed to resolve both challenges. It introduces <strong>deterministic 4096-byte Merkle tree block slicing</strong> to pinpoint the exact physical byte offsets of tampering; an <strong>$O(1)$ memory streaming multi-hasher</strong> (MD5, SHA-1, SHA-256 with 64 KB buffers); a <strong>five-tier diagnostic core</strong> (magic byte verification, EXIF/GPS telematics, Error Level Analysis with OpenCV Jet heatmaps, and temporal paradox detection); an <strong>append-only SHA-256 hash-chained custody ledger</strong>; and a <strong>MongoDB document store</strong> utilizing compound indexes and explain-plan-optimized queries.
+  </p>
+
+  <div class="callout">
+    <strong>Legal Admissibility Guarantee:</strong> The platform complies with <strong>ISO/IEC 27037:2012</strong> (Digital Evidence Handling) and automatically compiles certified PDF declarations fulfilling <strong>Section 63(4) of the Bharatiya Sakshya Adhiniyam, 2023 (BSA)</strong> (superseding Section 65B of the Indian Evidence Act, 1872).
+  </div>
+
+  <!-- ==================== ARCHITECTURE ==================== -->
+  <h2>2. System Architecture & Topology</h2>
+  <p>
+    ForenSight is structured into three decoupled, high-performance tiers:
+  </p>
+  <pre><code>+-----------------------------------------------------------------------------------+
+|                         PRESENTATION TIER (React 19 + Vite)                       |
+|   15 Interactive Views: /workspace, /cases, /evidence, /verify, /analysis, etc.   |
+|   Tailwind CSS v4 • Recharts Telemetry • Lucide Icons • Real-Time SSE Listeners   |
++-----------------------------------------+-----------------------------------------+
+                                          | HTTP REST APIs + Server-Sent Events (SSE)
++-----------------------------------------v-----------------------------------------+
+|                        APPLICATION & FORENSIC TIER (FastAPI)                      |
+|   Acquisition Streamer • Merkle Slicer • 5-Check Diagnostic Core • Watchdog       |
+|   ReportLab PDF Engine • OpenCV Image Analyzer • Pydantic Schema Validation       |
++-----------------------------------------+-----------------------------------------+
+                                          | Native BSON Driver / PyMongo
++-----------------------------------------v-----------------------------------------+
+|                     DATA PERSISTENCE & STORAGE TIER (MongoDB)                     |
+|   MongoDB 7.0 (WiredTiger Engine) with 8 BSON Collections & Compound Indexes      |
+|   Dual-Engine Fallback: In-Memory JSON-Synced Engine (Zero-Config Portability)   |
+|   Storage Vault: /storage/evidence, /manifests, /findings, /reports               |
++-----------------------------------------------------------------------------------+</code></pre>
+
+  <!-- ==================== METHODOLOGIES ==================== -->
+  <h2>3. Forensic Analytics & Core Algorithms</h2>
+
+  <h3>3.1 Stream-Buffered Multi-Algorithm Hashing ($O(1)$ RAM Complexity)</h3>
+  <p>
+    Loading multi-gigabyte forensic disk images into memory causes fatal Out-of-Memory (OOM) failures. ForenSight executes single-pass chunk streaming using 64 KB memory buffers:
+  </p>
+  <pre><code>CHUNK_SIZE = 65536  # 64 KiB buffer
+hasher_md5 = hashlib.md5()
+hasher_sha1 = hashlib.sha1()
+hasher_sha256 = hashlib.sha256()
+
+with open(file_path, "rb") as f:
+    while chunk := f.read(CHUNK_SIZE):
+        hasher_md5.update(chunk)
+        hasher_sha1.update(chunk)
+        hasher_sha256.update(chunk)</code></pre>
+  <ul>
+    <li><strong>Time Complexity:</strong> $O(N)$ where $N$ is total file byte length.</li>
+    <li><strong>Space Complexity:</strong> $O(1)$ constant overhead (never exceeds 64 KB RAM).</li>
+    <li><strong>Collision Protection:</strong> Guards against MD5/SHA-1 collision attacks by requiring all three digests to match baseline intake values.</li>
+  </ul>
+
+  <h3>3.2 4096-Byte Merkle Tree Slicing & Tamper Localization</h3>
+  <p>
+    The bitstream is sliced into deterministic 4096-byte blocks: $B = \{B_0, B_1, \dots, B_{k-1}\}$. Each leaf digest is computed as $H_i = \text{SHA-256}(B_i)$, followed by pairwise tree reduction:
+  </p>
+  <pre><code>                      [ Merkle Root ]
+                         /        \
+                 [ H_01 ]          [ H_23 ]
+                 /      \          /      \
+              [ H_0 ]   [ H_1 ]  [ H_2 ]  [ H_3 ]
+              (Block0)  (Block1) (Block2) (Block3)
+              [4096 B]  [4096 B]  [4096 B]  [4096 B]</code></pre>
+
+  <p><strong>Byte-Level Tamper Localization Algorithm:</strong></p>
+  <p>
+    When verifying candidate evidence against the baseline manifest:
+  </p>
+  <ol>
+    <li>The candidate file is sliced and hashed: $\{H_{\text{cand}, i}\}$.</li>
+    <li>Differing blocks are isolated: $\text{DiffBlocks} = \{ i \mid H_{\text{cand}, i} \neq H_{\text{ref}, i} \}$.</li>
+    <li>Each differing block maps directly to physical byte offsets:
+      <code>Offset Range = [i * 4096, (i + 1) * 4096 - 1]</code>
+    </li>
+    <li>The system renders an interactive <strong>Tamper Sector Grid</strong> in the UI with false-color OpenCV JET heatmaps.</li>
+  </ol>
+
+  <h3>3.3 The 5-Tier Forensic Diagnostic Core</h3>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Check Tier</th>
+        <th>Category</th>
+        <th>Mechanism</th>
+        <th>Threat Identified</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Tier 1</strong></td>
+        <td>Multi-Hashing</td>
+        <td>Concurrent MD5, SHA-1, SHA-256 validation</td>
+        <td>Bit rot, silent disk decay, collision spoofing</td>
+      </tr>
+      <tr>
+        <td><strong>Tier 2</strong></td>
+        <td>Magic Bytes</td>
+        <td>Header verification (`FF D8 FF`, `89 50 4E 47`, `25 50 44 46`, `4D 5A`)</td>
+        <td>File extension spoofing (e.g. malware `.exe` renamed to `.pdf`)</td>
+      </tr>
+      <tr>
+        <td><strong>Tier 3</strong></td>
+        <td>Metadata/EXIF</td>
+        <td>Pillow EXIF parser, decimal GPS coordinates, editing software stamps</td>
+        <td>Geographic location, camera serial numbers, Photoshop signatures</td>
+      </tr>
+      <tr>
+        <td><strong>Tier 4</strong></td>
+        <td>Error Level Analysis</td>
+        <td>Recompress at 90% Q, compute $\Delta = |I - I_{\text{recomp}}| \times 15$, JET heatmap</td>
+        <td>Image splicing, composite insertions, altered documents</td>
+      </tr>
+      <tr>
+        <td><strong>Tier 5</strong></td>
+        <td>Timeline Rules</td>
+        <td>Heuristic paradox analysis (creation vs. modified vs. EXIF)</td>
+        <td>Modified-before-creation inversions, future anachronisms</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>3.4 Append-Only Hash-Chained Chain of Custody</h3>
+  <p>
+    Every evidence custody transfer is linked using cryptographic parent-child hash chaining:
+  </p>
+  <pre><code>Payload_k   = CanonicalJSON(evidenceId, action, fromCustodian, toCustodian, timestamp, reason)
+EventHash_k = SHA-256(EventHash_{k-1} || Payload_k)
+Where EventHash_0 = SHA-256("00000000000000000000000000000000")</code></pre>
+  <p>
+    If any database administrator or attacker modifies or deletes a historical handover, recalculating the sequence fails at index $k$, immediately flagging <strong>Custody Chain Compromised</strong>.
+  </p>
+
+  <h3>3.5 Continuous 30-Second Integrity Watchdog Daemon</h3>
+  <p>
+    An autonomous asyncio background daemon sweeps all stored evidence every 30 seconds. If an out-of-band disk modification occurs, the daemon detects the hash mismatch, logs an urgent finding, and broadcasts instant alerts via Server-Sent Events (SSE).
+  </p>
+
+  <!-- ==================== DATABASE ==================== -->
+  <h2>4. NoSQL Database Architecture (MongoDB)</h2>
+  <p>
+    ForenSight utilizes MongoDB 7.0 (WiredTiger Storage Engine) across 8 collections: <code>cases</code>, <code>evidence</code>, <code>custodyEvents</code>, <code>analysisJobs</code>, <code>findings</code>, <code>auditLogs</code>, <code>watchdogAudits</code>, and <code>users</code>.
+  </p>
+  <ul>
+    <li><strong>Embedding:</strong> Merkle blocks and hashes are embedded inside <code>evidence</code> for single-seek disk I/O.</li>
+    <li><strong>Referencing:</strong> Evidence references cases (<code>caseId</code>) and custody events reference evidence (<code>evidenceId</code>) to prevent exceeding MongoDB's <strong>16 MB BSON document size boundary</strong>.</li>
+    <li><strong>Compound Indexes:</strong> <code>idx_case_acq</code> on <code>[("caseId", 1), ("acquisitionTimestamp", -1)]</code> guarantees index-covered retrieval (`IXSCAN`), eliminating in-memory sorting penalties (`SORT` stage).</li>
+  </ul>
+
+  <!-- ==================== RESULTS ==================== -->
+  <h2>5. Experimental Verification & Test Suite Results</h2>
+  <p>
+    The system was evaluated using 13 automated Pytest test suites with a <strong>100% pass rate</strong>:
+  </p>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Test Module</th>
+        <th>Target Capability Tested</th>
+        <th>Outcome</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>test_api.py::test_api_health</code></td>
+        <td>FastAPI server telemetry, watchdog state, and DB connectivity</td>
+        <td><span class="badge-pass">PASSED</span></td>
+      </tr>
+      <tr>
+        <td><code>test_api.py::test_acquire_and_verify_pipeline</code></td>
+        <td>Full bitstream acquisition, multi-hashing, and verification</td>
+        <td><span class="badge-pass">PASSED</span></td>
+      </tr>
+      <tr>
+        <td><code>test_api.py::test_watchdog_detects_storage_tampering</code></td>
+        <td>Out-of-band byte alteration detected within watchdog cycle</td>
+        <td><span class="badge-pass">PASSED</span></td>
+      </tr>
+      <tr>
+        <td><code>test_api.py::test_chain_of_custody_tamper_detection</code></td>
+        <td>Custody event hash chain breaks upon historical row modification</td>
+        <td><span class="badge-pass">PASSED</span></td>
+      </tr>
+      <tr>
+        <td><code>test_api.py::test_pdf_report_generation</code></td>
+        <td>Section 63(4) BSA compliance certificate PDF compiled via ReportLab</td>
+        <td><span class="badge-pass">PASSED</span></td>
+      </tr>
+      <tr>
+        <td><code>test_core.py::test_multi_hash_calculation</code></td>
+        <td>Concurrent MD5, SHA-1, SHA-256 accuracy on 64KB buffers</td>
+        <td><span class="badge-pass">PASSED</span></td>
+      </tr>
+      <tr>
+        <td><code>test_core.py::test_merkle_tree_consistency_and_proof</code></td>
+        <td>Deterministic 4096-byte Merkle root generation and verification</td>
+        <td><span class="badge-pass">PASSED</span></td>
+      </tr>
+      <tr>
+        <td><code>test_core.py::test_file_identity_and_extension_spoofing</code></td>
+        <td>Flags extension spoofing on PE headers disguised as PDF</td>
+        <td><span class="badge-pass">PASSED</span></td>
+      </tr>
+      <tr>
+        <td><code>test_core.py::test_tamper_localization_diff</code></td>
+        <td>Isolates exact byte offsets $[i \times 4096, (i+1) \times 4096 - 1]$</td>
+        <td><span class="badge-pass">PASSED</span></td>
+      </tr>
+      <tr>
+        <td><code>test_mongodb.py::test_mongodb_initialization_and_indexes</code></td>
+        <td>Validates compound indexes and schema initialization</td>
+        <td><span class="badge-pass">PASSED</span></td>
+      </tr>
+      <tr>
+        <td><code>test_mongodb.py::test_mongodb_crud_operations</code></td>
+        <td>BSON document insertion, querying, and updating</td>
+        <td><span class="badge-pass">PASSED</span></td>
+      </tr>
+      <tr>
+        <td><code>test_mongodb.py::test_mongodb_aggregation_pipeline</code></td>
+        <td>Multi-stage <code>$facet</code>, <code>$group</code>, and <code>$sort</code> execution</td>
+        <td><span class="badge-pass">PASSED</span></td>
+      </tr>
+      <tr>
+        <td><code>test_mongodb.py::test_mongodb_explain_plan</code></td>
+        <td>Verifies winning execution plan is <code>IXSCAN</code></td>
+        <td><span class="badge-pass">PASSED</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ==================== CONCLUSION ==================== -->
+  <h2>6. Conclusion</h2>
+  <p>
+    The <strong>ForenSight</strong> project successfully addresses the core limitations of conventional binary hashing in digital investigations. By combining deterministic 4096-byte Merkle tree block slicing, $O(1)$ memory streaming multi-hashing, a 5-tier diagnostic core, append-only cryptographic custody chaining, and an explain-plan-optimized MongoDB NoSQL database, the platform satisfies all legal admissibility criteria under <strong>Section 63(4) of the Bharatiya Sakshya Adhiniyam, 2023</strong> and <strong>ISO/IEC 27037:2012</strong>.
+  </p>
+
+  <hr style="margin: 40px 0; border: none; border-top: 1px solid var(--border);">
+  
+  <div style="font-size: 0.88rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
+    <div><strong>Student Investigator:</strong> Giridharan R E (23MIA1128)</div>
+    <div><strong>Course:</strong> Forensic Analytics (CSE4074) — SCOPE, VIT Chennai</div>
+  </div>
+
+</div>
+
+</body>
+</html>
